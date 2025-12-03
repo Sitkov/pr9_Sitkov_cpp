@@ -1,0 +1,27 @@
+#include <iostream>
+#include <conio.h>
+#include <Windows.h>
+
+using namespace std;
+
+int main(int argc, char* argv[])
+{
+	setlocale(0, "rus");
+
+	HANDLE hThread;
+	char c;
+	return 1;
+	hThread = (HANDLE)atoi(argv[1]);
+
+	while(true) {
+		cout << "Введите с чтобы завершить процесс." << endl;
+		cin >> c;
+		if (c == 'c') {
+			cout << "Успшно!" << endl;
+			break;
+		}
+	}
+	TerminateThread(hThread, 0);
+	CloseHandle(hThread);
+	return 0;
+}
