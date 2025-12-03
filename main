@@ -1,0 +1,205 @@
+#include <iostream>
+#include <Windows.h>
+#include <conio.h>
+
+using namespace std;
+
+void thread() {
+    int count = 0;
+    while (true) {
+        count++;
+        Sleep(1000);
+        cout << "count = " << count << endl;
+    }
+}
+
+PROCESS_INFORMATION openWord(wchar_t* app) {
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+
+    ZeroMemory(&si, sizeof(STARTUPINFO));
+    si.cb = sizeof(STARTUPINFO);
+
+    if (!CreateProcess(app, NULL, NULL, NULL, FALSE,
+        CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi)) {
+        cout << "Ошибка - " << GetLastError() << endl;
+    }
+    else {
+        cout << "Программа запущена!" << endl;
+    }
+    return pi;
+}
+
+PROCESS_INFORMATION openExel(wchar_t* app) {
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+
+    ZeroMemory(&si, sizeof(STARTUPINFO));
+    si.cb = sizeof(STARTUPINFO);
+
+    if (!CreateProcess(app, NULL, NULL, NULL, FALSE,
+        CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi)) {
+        cout << "Ошибка - " << GetLastError() << endl;
+    }
+    else {
+        cout << "Программа запущена!" << endl;
+    }
+    return pi;
+}
+
+PROCESS_INFORMATION openPaint(wchar_t* app) {
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+
+    ZeroMemory(&si, sizeof(STARTUPINFO));
+    si.cb = sizeof(STARTUPINFO);
+
+    if (!CreateProcess(app, NULL, NULL, NULL, FALSE,
+        CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi)) {
+        cout << "Ошибка - " << GetLastError() << endl;
+    }
+    else {
+        cout << "Программа запущена!" << endl;
+    }
+    return pi;
+}
+
+PROCESS_INFORMATION openNotepad(wchar_t* app) {
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+
+    ZeroMemory(&si, sizeof(STARTUPINFO));
+    si.cb = sizeof(STARTUPINFO);
+
+    if (!CreateProcess(app, NULL, NULL, NULL, FALSE,
+        CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi)) {
+        cout << "Ошибка - " << GetLastError() << endl;
+    }
+    else {
+        cout << "Программа запущена!" << endl;
+    }
+    return pi;
+}
+
+void CloseProcess(PROCESS_INFORMATION pi) {
+        TerminateProcess(pi.hProcess, 0);
+        CloseHandle(pi.hProcess);
+        CloseHandle(pi.hThread);
+}
+
+int main()
+{
+    setlocale(0,"rus");
+    wchar_t  AppWORD[] = L"C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE";
+    wchar_t  AppEXEL[] = L"C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE";
+    wchar_t AppPAINT[] = L"C:\\WINDOWS\\system32\\mspaint.exe";
+    wchar_t  AppNotepad[] = L"C:\\Program Files\\Notepad++\\notepad++.exe";
+
+    bool exit = false;
+    PROCESS_INFORMATION piWord = { 0 };
+    PROCESS_INFORMATION piExcel = { 0 };
+    PROCESS_INFORMATION piPaint = { 0 };
+    PROCESS_INFORMATION piNotepad = { 0 };
+
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+    SECURITY_ATTRIBUTES sa;
+
+    DWORD idThread;
+    HANDLE hThread;
+
+    sa.nLength = sizeof(SECURITY_ATTRIBUTES);
+    sa.lpSecurityDescriptor = NULL;
+    sa.bInheritHandle = TRUE;
+
+    hThread = CreateThread(&sa, 0, (LPTHREAD_START_ROUTINE)thread, NULL, 0, &idThread);
+
+    ZeroMemory(&si, sizeof(STARTUPINFO));
+    si.cb = sizeof(STARTUPINFO);
+
+    wchar_t ChildApp[] = L"C:\\Sitkov\\pr9_Sitkov_cpp\\x64\\Debug\\child_process.exe";
+
+    if (!CreateProcess(NULL, ChildApp, NULL, NULL, TRUE,
+        CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi)) {
+        cout << "Ошибка - " << GetLastError() << endl;
+    }
+
+    while (!exit) {
+        int otv;
+        cout << "---------------------------" << endl;
+        cout << "Какое приложение открыть?" << endl;
+        cout << "1. Word" << endl;
+        cout << "2. Exel" << endl;
+        cout << "3. Paint" << endl;
+        cout << "4. Notepad" << endl;
+        cout << "---------------------------" << endl;
+        cout << "Какое приложение закрыть?" << endl;
+        cout << "5. closeWord" << endl;
+        cout << "6. closeExcel" << endl;
+        cout << "7. closePaint" << endl;
+        cout << "8. closeNotepad" << endl;
+        cout << "" << endl;
+        cout << "9. Exit" << endl;
+        cout << " " << endl;
+        cin >> otv;
+
+        switch (otv) {
+            case 1:
+                piWord = openWord(AppWORD);
+                break;
+            case 2:
+                piExcel = openExel(AppEXEL);
+                break;
+            case 3:
+                piPaint = openPaint(AppPAINT);
+                break;
+            case 4:
+                piNotepad = openNotepad(AppNotepad);
+                break;
+            case 5:
+                if (piWord.hProcess != NULL) {
+                    CloseProcess(piWord);
+                }
+                else {
+                    cout << "" << endl;
+                    cout << "Процесс не найден!!!" << endl;
+                }
+                break;
+            case 6:
+                if (piExcel.hProcess != NULL) {
+                    CloseProcess(piExcel);
+                }
+                else {
+                    cout << "" << endl;
+                    cout << "Процесс не найден!!!" << endl;
+                }
+                break;
+            case 7:
+                if (piPaint.hProcess != NULL) {
+                    CloseProcess(piPaint);
+                }
+                else {
+                    cout << "" << endl;
+                    cout << "Процесс не найден!!!" << endl;
+                }
+                break;
+            case 8:
+                if (piNotepad.hProcess != NULL) {
+                    CloseProcess(piNotepad);
+                }
+                else {
+                    cout << "" << endl;
+                    cout << "Процесс не найден!!!" << endl;
+                }
+                break;
+            case 9:
+                exit = true;
+                break;
+            default:
+                cout << "" << endl;
+                cout << "Такого варианта нет.." << endl;
+                   break;
+        }
+    }
+    return 0;
+}
