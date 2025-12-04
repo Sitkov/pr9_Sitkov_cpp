@@ -1,7 +1,0 @@
-﻿  pr9_Sitkov_cpp.cpp
-C:\Sitkov\pr9_Sitkov_cpp\pr9_Sitkov_cpp\pr9_Sitkov_cpp.cpp(14,26): warning C4129: "W": нераспознанная escape-последовательность символов
-C:\Sitkov\pr9_Sitkov_cpp\pr9_Sitkov_cpp\pr9_Sitkov_cpp.cpp(14,26): warning C4129: "s": нераспознанная escape-последовательность символов
-C:\Sitkov\pr9_Sitkov_cpp\pr9_Sitkov_cpp\pr9_Sitkov_cpp.cpp(15,26): warning C4129: "P": нераспознанная escape-последовательность символов
-C:\Sitkov\pr9_Sitkov_cpp\pr9_Sitkov_cpp\pr9_Sitkov_cpp.cpp(15,26): warning C4129: "N": нераспознанная escape-последовательность символов
-  LINK : не найден или не выполнена сборка C:\Sitkov\pr9_Sitkov_cpp\x64\Debug\pr9_Sitkov_cpp.exe при последней инкрементной компоновке; выполняется полная компоновка
-  pr9_Sitkov_cpp.vcxproj -> C:\Sitkov\pr9_Sitkov_cpp\x64\Debug\pr9_Sitkov_cpp.exe
