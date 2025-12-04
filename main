@@ -4,12 +4,33 @@
 
 using namespace std;
 
+PROCESS_INFORMATION piWord[] = { 0 };
+PROCESS_INFORMATION piExcel[] = { 0 };
+PROCESS_INFORMATION piPaint[] = { 0 };
+PROCESS_INFORMATION piNotepad[] = { 0 };
+
 void thread() {
     int count = 0;
     while (true) {
+        system("cls");
         count++;
-        Sleep(1000);
         cout << "count = " << count << endl;
+        cout << "---------------------------" << endl;
+        cout << "Какое приложение открыть?" << endl;
+        cout << "1. Word" << endl;
+        cout << "2. Exel" << endl;
+        cout << "3. Paint" << endl;
+        cout << "4. Notepad" << endl;
+        cout << "---------------------------" << endl;
+        cout << "Какое приложение закрыть?" << endl;
+        cout << "5. closeWord" << endl;
+        cout << "6. closeExcel" << endl;
+        cout << "7. closePaint" << endl;
+        cout << "8. closeNotepad" << endl;
+        cout << "" << endl;
+        cout << "9. Exit" << endl;
+        cout << " " << endl;
+        Sleep(1500);
     }
 }
 
@@ -93,13 +114,14 @@ int main()
     wchar_t  AppWORD[] = L"C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE";
     wchar_t  AppEXEL[] = L"C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE";
     wchar_t AppPAINT[] = L"C:\\WINDOWS\\system32\\mspaint.exe";
-    wchar_t  AppNotepad[] = L"C:\\Program Files\\Notepad++\\notepad++.exe";
+    wchar_t  AppNotepad[] = L"C:\\WINDOWS\\system32\\notepad.exe";
 
     bool exit = false;
-    PROCESS_INFORMATION piWord = { 0 };
-    PROCESS_INFORMATION piExcel = { 0 };
-    PROCESS_INFORMATION piPaint = { 0 };
-    PROCESS_INFORMATION piNotepad = { 0 };
+
+    int countW = 0;
+    int countE = 0;
+    int countP = 0;
+    int countN = 0;
 
     STARTUPINFO si;
     PROCESS_INFORMATION pi;
@@ -117,9 +139,12 @@ int main()
     ZeroMemory(&si, sizeof(STARTUPINFO));
     si.cb = sizeof(STARTUPINFO);
 
-    wchar_t ChildApp[] = L"C:\\Sitkov\\pr9_Sitkov_cpp\\x64\\Debug\\child_process.exe";
+    //было wchar_t childApp = L"C:\\Sitkov\\pr9_Sitkov_cpp\\x64\\Debug\\child_process.exe %I64u";
 
-    if (!CreateProcess(NULL, ChildApp, NULL, NULL, TRUE,
+    wchar_t cmdLine[256];
+    swprintf_s(cmdLine, L"C:\\Sitkov\\pr9_Sitkov_cpp\\x64\\Debug\\child_process.exe %d", (int)hThread);
+
+    if (!CreateProcess(NULL, cmdLine, NULL, NULL, TRUE,   
         CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi)) {
         cout << "Ошибка - " << GetLastError() << endl;
     }
@@ -145,20 +170,32 @@ int main()
 
         switch (otv) {
             case 1:
-                piWord = openWord(AppWORD);
+                system("cls");
+                piWord[countW] = openWord(AppWORD);
+                countW++;
                 break;
             case 2:
-                piExcel = openExel(AppEXEL);
+                system("cls");
+                piExcel[countE] = openExel(AppEXEL);
+                countE++;
                 break;
             case 3:
-                piPaint = openPaint(AppPAINT);
+                system("cls");
+                piPaint[countP] = openPaint(AppPAINT);
+                countP++;
                 break;
             case 4:
-                piNotepad = openNotepad(AppNotepad);
+                system("cls");
+                piNotepad[countN] = openNotepad(AppNotepad);
+                countN++;
                 break;
             case 5:
-                if (piWord.hProcess != NULL) {
-                    CloseProcess(piWord);
+                system("cls");
+                if (countW > 0) {
+                    if (piWord[countW - 1].hProcess != NULL) {
+                        CloseProcess(piWord[countW - 1]);
+                        countW--;
+                    }
                 }
                 else {
                     cout << "" << endl;
@@ -166,17 +203,26 @@ int main()
                 }
                 break;
             case 6:
-                if (piExcel.hProcess != NULL) {
-                    CloseProcess(piExcel);
+                system("cls");
+                if (countE > 0) {
+                    if (piExcel[countE - 1].hProcess != NULL) {
+                        CloseProcess(piExcel[countE - 1]);
+                        countE--;
+                    }
                 }
+
                 else {
                     cout << "" << endl;
                     cout << "Процесс не найден!!!" << endl;
                 }
                 break;
             case 7:
-                if (piPaint.hProcess != NULL) {
-                    CloseProcess(piPaint);
+                system("cls");
+                if (countP > 0) {
+                    if (piPaint[countP - 1].hProcess != NULL) {
+                        CloseProcess(piPaint[countP - 1]);
+                        countP--;
+                    }
                 }
                 else {
                     cout << "" << endl;
@@ -184,15 +230,21 @@ int main()
                 }
                 break;
             case 8:
-                if (piNotepad.hProcess != NULL) {
-                    CloseProcess(piNotepad);
+                system("cls");
+                if (countN > 0) {
+                    if (piNotepad[countN - 1].hProcess != NULL) {
+                        CloseProcess(piNotepad[countN - 1]);
+                        countN--;
+                    }
                 }
+
                 else {
                     cout << "" << endl;
                     cout << "Процесс не найден!!!" << endl;
                 }
                 break;
             case 9:
+                system("cls");
                 exit = true;
                 break;
             default:
